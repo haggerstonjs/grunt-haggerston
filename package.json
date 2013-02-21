@@ -44,5 +44,8 @@
   },
   "keywords": [
     "gruntplugin"
-  ]
+  ],
+  "dependencies": {
+    "swig": "~0.13.5"
+  }
 }
