@@ -1,0 +1,7 @@
+{
+  "title": "About",
+  "template":"page.html",
+  "templateData": {
+    "content": "index.md"
+  }
+}

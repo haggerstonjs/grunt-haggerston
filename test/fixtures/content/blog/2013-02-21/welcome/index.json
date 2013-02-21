@@ -1,0 +1,7 @@
+{
+  "title": "Welcome to my blog",
+  "template":"blog-post.html",
+  "templateData": {
+    "content": "index.md"
+  }
+}
