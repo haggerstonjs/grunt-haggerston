@@ -27,22 +27,27 @@ exports.haggerston = {
     // setup here if necessary
     done();
   },
-  default_options: function(test) {
-    test.expect(1);
+  generatedHtml: function(test) {
 
-    var actual = grunt.file.read('tmp/default_options');
-    var expected = grunt.file.read('test/expected/default_options');
-    test.equal(actual, expected, 'should describe what the default behavior is.');
+    var expectedHtml = grunt.file.expand('test/expected/**/*.html');
+    test.expect(expectedHtml.length);
+
+    expectedHtml.forEach(
+        function(path)
+        {
+          var generatedPath = 'tmp' + path.substr('test/expected'.length),
+              actual,
+              expected;
+          if (grunt.file.exists(generatedPath)) {
+            actual = grunt.file.read(generatedPath);
+            expected = grunt.file.read(path);
+            test.equal(actual, expected, 'The generated file at ' + path + ' should be as expected');
+          } else {
+            test.ok(false, generatedPath + ' was not generated');
+          }
+        }
+    );
 
     test.done();
-  },
-  custom_options: function(test) {
-    test.expect(1);
-
-    var actual = grunt.file.read('tmp/custom_options');
-    var expected = grunt.file.read('test/expected/custom_options');
-    test.equal(actual, expected, 'should describe what the custom option(s) behavior is.');
-
-    test.done();
-  },
+  }
 };
