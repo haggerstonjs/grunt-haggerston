@@ -46,6 +46,7 @@
     "gruntplugin"
   ],
   "dependencies": {
-    "swig": "~0.13.5"
+    "swig": "~0.13.5",
+    "marked": "~0.2.8"
   }
 }
