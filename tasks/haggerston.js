@@ -8,17 +8,11 @@
 
 'use strict';
 
-var path = require('path');
+var path = require('path'),
+    Node = require('./lib/node');
 
-var Node = function(path) {
-  this.path = path;
-  this.children = [];
-};
 
 module.exports = function(grunt) {
-
-  // Please see the Grunt documentation for more information regarding task
-  // creation: http://gruntjs.com/creating-tasks
 
   grunt.registerTask('haggerston', 'Your task description goes here.', function() {
     // Merge task-specific and/or target-specific options with these defaults.
@@ -65,11 +59,8 @@ module.exports = function(grunt) {
         baseNode = node;
       }
 
-      baseNode.filename = path.basename(filePath, '.json');
-      var objFileJSON = grunt.file.readJSON(filePath);
-      for (var prop in objFileJSON) {
-        baseNode[prop] = objFileJSON[prop];
-      }
+      baseNode.initialize(path.basename(filePath, '.json'), grunt.file.readJSON(filePath));
+
     });
 
     console.log(JSON.stringify(site, null, 2));
