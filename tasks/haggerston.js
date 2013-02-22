@@ -8,8 +8,7 @@
 
 'use strict';
 
-var path = require('path'),
-    Node = require('./lib/node');
+var path = require('path');
 
 
 module.exports = function(grunt) {
@@ -17,9 +16,11 @@ module.exports = function(grunt) {
   grunt.registerTask('haggerston', 'Your task description goes here.', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      src: 'src',
-      out: 'out'
-    });
+          src: 'src',
+          out: 'out'
+        }),
+        Node = require('./lib/node')(options.src, grunt)
+        ;
 
     if (!grunt.file.isDir(options.src)) {
       grunt.fail.warn('src value is not a valid directory');
@@ -58,7 +59,6 @@ module.exports = function(grunt) {
         }
         baseNode = node;
       }
-
       baseNode.initialize(path.basename(filePath, '.json'), grunt.file.readJSON(filePath));
 
     });
