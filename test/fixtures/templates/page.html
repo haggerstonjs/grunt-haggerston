@@ -1,4 +1,4 @@
 {% extends 'site.html' %}
 {% block bodyContent %}
-  {{ content }}
+  {%autoescape false %}{{ content }}{% endautoescape %}
 {% endblock %}
