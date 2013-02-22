@@ -32,33 +32,42 @@ module.exports = function(grunt) {
     // Grab array of json file paths from the src folder
     var jsonFilePaths = grunt.file.expand(options.src + '/**/*.json');
 
-    // Base path is the src path plus the content path
-    var rootPath = path.join(options.src, 'content') + path.sep;
+    // Site path is the src path plus the content path,
+    // this is the base from which actual page paths start.
+    var sitePath = path.join(options.src, 'content') + path.sep;
 
+    // Create a node that represents the root of the site. This will hold the hirarchy
+    // of Node objects that represents the directory structure of the src folder.
     var site = new Node('');
 
+    // Temporary and intermediate map of nodes keyed by their path,
+    // used to make lazy instantiation of nodes easier.
     var nodesByPath = {};
 
     jsonFilePaths.forEach(function(filePath) {
-      var objPath = path.dirname(filePath)
-                        .substr(rootPath.length)
-                        .split(path.sep)
+      var objPath = path.dirname(filePath) // get directory of the file
+                        .substr(sitePath.length) // chop off the sitePath prefix
+                        .split(path.sep) // split paths segments into an array
                         .filter(function(e) {return e;}); // remove empty elements
 
       var basePath = '';
       var baseNode = site;
 
+      // This builds up an object hierarchy of each directory segment in the path
       for (var i in objPath) {
         var pathSegment = objPath[i];
         basePath += pathSegment + path.sep;
-        var node = nodesByPath[basePath];
 
+        // Try and get node from the map, and if it doesn't exist then create it
+        var node = nodesByPath[basePath];
         if (!node) {
           node = nodesByPath[basePath] = new Node(basePath);
           baseNode.children.push(node);
         }
         baseNode = node;
       }
+
+      // Create the actual file node at the deepest part of the object hierarchy
       baseNode.initialize(path.basename(filePath, '.json'), grunt.file.readJSON(filePath));
 
     });
