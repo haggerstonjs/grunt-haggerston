@@ -16,25 +16,39 @@ module.exports = function(basePath, grunt)
   Node.prototype.initialize = function(filename, properties)
   {
     this.filename = filename;
+
+    // Copy over properties from the json data onto the base of this object
     for (var prop in properties) {
       this[prop] = properties[prop];
     }
+
+    // A node must have template data to render with if it wasn't already specified in the .json
+    this.templateData = this.templateData || {};
   };
 
   Node.prototype.render = function()
   {
-    for (var fieldName in this.templateData) {
-      var data = this.templateData[fieldName];
-      if (data.match(/\.md$/)) {
-        this.templateData[fieldName] = marked(
-            grunt.file.read(basePath + '/content/' + this.path + data), {
-//            highlight: function(code, lang) {
-//              return hljs.highlight(lang, code).value;
-//            }
-            }
-        );
+    var path = this.path;
+
+    // Recursively finds fields in the templateData object that specify markdown files
+    // and parses them to html.
+    function findAndParseMarkdown(data) {
+      for (var fieldName in data) {
+        var fieldValue = data[fieldName];
+        if (typeof fieldValue === 'string') {
+          // If it's a string then check if the extension is .md and parse it
+          if (fieldValue.match(/\.md$/)) {
+            var mdPath = basePath + '/content/' + path + fieldValue;
+            data[fieldName] = marked(grunt.file.read(mdPath));
+          }
+        } else if (typeof fieldValue === 'object') {
+          // Recursively search nested objects
+          findAndParseMarkdown(fieldValue);
+        }
       }
     }
+
+    findAndParseMarkdown(this.templateData);
 
     var rendered = swig.compileFile(this.template).render(this.templateData);
     return rendered;
