@@ -8,43 +8,71 @@
 
 'use strict';
 
+var path = require('path');
+
+var Node = function(path) {
+  this.path = path;
+  this.children = [];
+};
+
 module.exports = function(grunt) {
 
   // Please see the Grunt documentation for more information regarding task
   // creation: http://gruntjs.com/creating-tasks
 
-  grunt.registerMultiTask('haggerston', 'Your task description goes here.', function() {
+  grunt.registerTask('haggerston', 'Your task description goes here.', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      punctuation: '.',
-      separator: ', '
+      src: 'src',
+      out: 'out'
     });
 
-    // Iterate over all specified file groups.
-    this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
+    if (!grunt.file.isDir(options.src)) {
+      grunt.fail.warn('src value is not a valid directory');
+    }
+    if (!grunt.file.isDir(options.out)) {
+      grunt.fail.warn('out value is not a valid directory');
+    }
+
+    // Grab array of json file paths from the src folder
+    var jsonFilePaths = grunt.file.expand(options.src + '/**/*.json');
+
+    // Base path is the src path plus the content path
+    var rootPath = path.join(options.src, 'content') + path.sep;
+
+    var site = new Node('');
+
+    var nodesByPath = {};
+
+    jsonFilePaths.forEach(function(filePath) {
+      var objPath = path.dirname(filePath)
+                        .substr(rootPath.length)
+                        .split(path.sep)
+                        .filter(function(e) {return e;}); // remove empty elements
+
+      var basePath = '';
+      var baseNode = site;
+
+      for (var i in objPath) {
+        var pathSegment = objPath[i];
+        basePath += pathSegment + path.sep;
+        var node = nodesByPath[basePath];
+
+        if (!node) {
+          node = nodesByPath[basePath] = new Node(basePath);
+          baseNode.children.push(node);
         }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
+        baseNode = node;
+      }
 
-      // Handle options.
-      src += options.punctuation;
-
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
-
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
+      baseNode.filename = path.basename(filePath, '.json');
+      var objFileJSON = grunt.file.readJSON(filePath);
+      for (var prop in objFileJSON) {
+        baseNode[prop] = objFileJSON[prop];
+      }
     });
-  });
 
+    console.log(JSON.stringify(site, null, 2));
+
+  });
 };
