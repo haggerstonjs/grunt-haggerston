@@ -32,7 +32,7 @@ module.exports = function(grunt) {
     haggerston: {
       options: {
         src: 'test/fixtures',
-        out: 'test/expected'
+        out: 'tmp'
       }
     },
 

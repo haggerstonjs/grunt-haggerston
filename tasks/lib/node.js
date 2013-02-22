@@ -34,17 +34,16 @@ module.exports = function(basePath, grunt)
 //              return hljs.highlight(lang, code).value;
 //            }
             }
-        )
+        );
       }
     }
-  }
+  };
 
   Node.prototype.render = function()
   {
-
     var rendered = swig.compileFile(this.template).render(this.templateData);
-    return rendered();
-  }
+    return rendered;
+  };
 
   return Node;
 };
