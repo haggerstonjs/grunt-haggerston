@@ -50,7 +50,15 @@ module.exports = function(basePath, grunt)
 
     findAndParseMarkdown(this.templateData);
 
-    var rendered = swig.compileFile(this.template).render(this.templateData);
+    // Create an intermediate data provider that will combine the properties of templateData
+    // with this node object.
+    var templateDataProvider = {};
+    for (var prop in this.templateData) {
+      templateDataProvider[prop] = this.templateData[prop];
+    }
+    templateDataProvider.node = this;
+
+    var rendered = swig.compileFile(this.template).render(templateDataProvider);
     return rendered;
   };
 
