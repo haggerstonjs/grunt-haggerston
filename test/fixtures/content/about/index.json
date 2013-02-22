@@ -1,7 +1,7 @@
 {
-  "title": "About",
   "template":"page.html",
   "templateData": {
+    "title": "About",
     "content": "index.md"
   }
 }
