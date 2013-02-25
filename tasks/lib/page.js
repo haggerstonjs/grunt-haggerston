@@ -15,16 +15,17 @@ var path = require('path'),
 
 // The Page class represents a page of site that should be rendered to html
 var Page = function(jsonFile) {
+
   var self = this;
+
+  var jsonData = grunt.file.readJSON(jsonFile);
 
   // Set various path and filename strings
   this.jsonFile = jsonFile;
   this.jsonPath = path.dirname(jsonFile);
-  this.filename = path.basename(jsonFile, '.json') + '.html';
+  this.filename = path.basename(jsonFile, '.json') + (jsonData.extension || '.html');
   this.path = this.urlPath = path.relative(Page.contentPath, this.jsonPath);
   this.url = path.join(this.urlPath, this.filename);
-
-  var jsonData = grunt.file.readJSON(jsonFile);
 
    // Copy over properties from the passed json data onto this object
   for (var prop in jsonData) {
