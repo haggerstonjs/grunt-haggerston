@@ -14,48 +14,46 @@ var path = require('path'),
     swig = require('swig');
 
 // The Page class represents a page of site that should be rendered to html
-var Page = function(baseContentPath, file, properties) {
-  this.baseContentPath = baseContentPath;
-  this.file = file; // full path and filename
-  this.filename = path.basename(file); // just the filename
-  this.directory = path.dirname(file); // just the direcrory path
-  this.children = [];
+var Page = function(jsonFile) {
+  var self = this;
 
-  console.log(this.file, this.filename, this.directory);
+  // Set various path and filename strings
+  this.jsonFile = jsonFile;
+  this.jsonPath = path.dirname(jsonFile);
+  this.filename = path.basename(jsonFile, '.json') + '.html';
+  this.path = this.urlPath = path.relative(Page.contentPath, this.jsonPath);
+  this.url = path.join(this.urlPath, this.filename);
+
+  var jsonData = grunt.file.readJSON(jsonFile);
 
    // Copy over properties from the passed json data onto this object
-  for (var prop in properties) {
-    this[prop] = properties[prop];
+  for (var prop in jsonData) {
+    this[prop] = jsonData[prop];
   }
 
-  // A page must have template data to render it wasn't already specified in the .json
+  // A page must have template data to render if it wasn't already specified in the .json
   this.templateData = this.templateData || {};
-};
 
-Page.prototype.render = function() {
-  var baseContentPath = this.baseContentPath;
-  var directory = this.directory;
-
-  // Recursively finds fields in the templateData object that specify markdown files
-  // and parses them to html.
+  // Recursively find fields in templateData that specify markdown files and parse them
   function findAndParseMarkdown(data) {
-    for (var fieldName in data) {
-      var fieldValue = data[fieldName];
-      if (typeof fieldValue === 'string') {
+    for (var key in data) {
+      var value = data[key];
+      if (typeof value === 'string') {
         // If it's a string then check if the extension is .md and parse it
-        if (fieldValue.match(/\.md$/)) {
-          var mdPath = path.normalize(path.join(baseContentPath, directory, fieldValue));
-          data[fieldName] = marked(grunt.file.read(mdPath));
+        if (value.match(/\.md$/)) {
+          var mdPath = path.join(self.jsonPath, value);
+          data[key] = marked(grunt.file.read(mdPath));
         }
-      } else if (typeof fieldValue === 'object') {
-        // Recursively search nested objects
-        findAndParseMarkdown(fieldValue);
+      } else if (typeof value === 'object') {
+        findAndParseMarkdown(value); // Recursively search nested objects
       }
     }
   }
 
   findAndParseMarkdown(this.templateData);
+};
 
+Page.prototype.render = function() {
   // Create an intermediate data provider that will combine the properties of templateData
   // with this page object.
   var templateDataProvider = {};

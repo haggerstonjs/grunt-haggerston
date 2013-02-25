@@ -25,28 +25,30 @@ module.exports = function(grunt) {
       grunt.fail.warn('options.src is not a valid directory');
     }
 
+    var contentPath = path.join(options.src, 'content');
+    var templatesPath = path.join(options.src, 'templates');
+
+    Page.contentPath = contentPath;
+
     // Set base path that swig will look inside for template files
     swig.init({
-      root: options.src + '/templates'
+      root: templatesPath
     });
 
-    // This is the base from which actual page paths start
-    var baseContentPath = path.join(options.src, 'content') + path.sep;
-
     // Grab array of json file paths from the src folder
-    var jsonPaths = grunt.file.expand(options.src + '/**/*.json');
+    var jsonFiles = grunt.file.expand(options.src + '/**/*.json');
 
+    // Create array of Page objects that need to be rendered to html files
     var pages = [];
-
-    // Create a Page object for each .json file found in the content path
-    jsonPaths.forEach(function(jsonPath) {
-      var page = new Page(baseContentPath, jsonPath.substr(baseContentPath.length), grunt.file.readJSON(jsonPath));
+    jsonFiles.forEach(function(jsonFile) {
+      var page = new Page(jsonFile);
       pages.push(page);
     });
 
     // Render each file page to a file
     pages.forEach(function(page) {
-      var outFilePath = path.normalize(options.out + path.sep + page.directory + path.sep + path.basename(page.filename, '.json') + '.html');
+      // console.log(page);
+      var outFilePath = path.join(options.out, page.url);
       grunt.file.write(outFilePath, page.render());
     });
 
