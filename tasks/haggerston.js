@@ -49,6 +49,7 @@ module.exports = function(grunt) {
     pages.forEach(function(page) {
       // console.log(page);
       var outFilePath = path.join(options.out, page.url);
+      grunt.log.writeln('Generating ' + page.jsonFile.cyan + ' -> ' + outFilePath.cyan);
       grunt.file.write(outFilePath, page.render());
     });
 
