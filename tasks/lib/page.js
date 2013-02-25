@@ -26,6 +26,7 @@ var Page = function(jsonFile) {
   this.filename = path.basename(jsonFile, '.json') + (jsonData.extension || '.html');
   this.path = this.urlPath = path.relative(Page.contentPath, this.jsonPath);
   this.url = path.join(this.urlPath, this.filename);
+  this.children = [];
 
    // Copy over properties from the passed json data onto this object
   for (var prop in jsonData) {

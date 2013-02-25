@@ -40,14 +40,30 @@ module.exports = function(grunt) {
 
     // Create array of Page objects that need to be rendered to html files
     var pages = [];
+
+    var pagesByPath = {};
+
     jsonFiles.forEach(function(jsonFile) {
       var page = new Page(jsonFile);
       pages.push(page);
+      pagesByPath[page.path] = page;
     });
 
     // Render each file page to a file
     pages.forEach(function(page) {
       // console.log(page);
+      var pathParts = page.path.split(path.sep),
+          parentPage;
+      while (pathParts.length) {
+        pathParts.pop();
+        if (parentPage = pagesByPath[pathParts.join(path.sep)]) {
+          if (parentPage !== page) {
+            parentPage.children.push(page);
+          }
+          break;
+        }
+      }
+
       var outFilePath = path.join(options.out, page.url);
       grunt.log.writeln('Generating ' + page.jsonFile.cyan + ' -> ' + outFilePath.cyan);
       grunt.file.write(outFilePath, page.render());
