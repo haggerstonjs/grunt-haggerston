@@ -2,7 +2,7 @@
 {% block bodyContent %}
   <h1>Blog</h1>
   <ul>
-    {% for child in page|findInPath(path) %}
+    {% for child in page|getChildren(path) %}
       <li><a href="{{ page|linkTo(child) }}">{{ child.templateData.title }}</a></li>
     {% endfor %}
   </ul>

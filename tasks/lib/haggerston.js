@@ -9,11 +9,16 @@
 'use strict';
 
 var path = require('path');
+var grunt = require('grunt');
+var _ = require('underscore');
 var Page = require('./page');
 
-var Haggerston = function(contentPath, jsonFiles) {
+var Haggerston = function(contentPath) {
 
   Page.contentPath = contentPath;
+
+  // Grab array of json file paths from the contentPath
+  var jsonFiles = grunt.file.expand(contentPath + '/**/*.json');
 
   // Create array of Page objects that need to be rendered to html files
   var pages = this.pages = [];
@@ -52,6 +57,15 @@ Haggerston.prototype.find = function(searchPath) {
       function(page)
       {
         return page.path.indexOf(searchPath) === 0;
+      }
+  );
+};
+
+Haggerston.prototype.findPage = function(url) {
+  return _(this.pages).find(
+      function(page)
+      {
+        return page.url === url;
       }
   );
 };

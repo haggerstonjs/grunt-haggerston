@@ -12,7 +12,7 @@ var path = require('path');
 var swig = require('swig');
 var _ = require('underscore');
 
-var Haggerston = require('./lib/haggerston');
+var Haggerston = require('../tasks/lib/haggerston');
 
 module.exports = function(grunt) {
   grunt.registerTask('haggerston', 'Your task description goes here.', function() {
@@ -44,10 +44,7 @@ module.exports = function(grunt) {
       extensions: options.swigExtensions
     });
 
-    // Grab array of json file paths from the src folder
-    var jsonFiles = grunt.file.expand(options.src + '/**/*.json');
-
-    var haggerston = new Haggerston(contentPath, jsonFiles);
+    var haggerston = new Haggerston(contentPath);
 
     // Render each file page to a file
     haggerston.pages.forEach(function(page) {

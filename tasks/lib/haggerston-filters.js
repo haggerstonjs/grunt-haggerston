@@ -19,14 +19,22 @@ exports.linkTo = function(fromPage, toPage) {
   return relativeLink;
 };
 
+exports.findPage = function(page, url) {
+  url = url || page.url;
+  return page.haggerston.findPage(url);
+};
+
+exports.getChildren = function(page, url) {
+  url = url || page.url;
+  return page.haggerston.findPage(url).children;
+};
+
 exports.findInPath = function(page, searchPath) {
-  if (searchPath) {
-    if (searchPath.indexOf('./') === 0) {
-      searchPath = path.join(page.path, searchPath.substr(2));
-    }
-    return page.haggerston.find(searchPath);
+  searchPath = searchPath || './';
+  if (searchPath.indexOf('./') === 0) {
+    searchPath = path.join(page.path, searchPath.substr(2));
   }
-  return page.children;
+  return page.haggerston.find(searchPath);
 };
 
 exports.basePath = function(page) {
