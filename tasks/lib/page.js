@@ -66,9 +66,10 @@ var Page = function(haggerston, jsonFile) {
 Page.prototype.render = function(haggerston) {
   // Create an intermediate data provider that will combine the properties of templateData
   // with this page object.
-  var data = _({}).extend(this.templateData);
-  data.page = this;
-  data.haggerston = haggerston;
+  var data = _({
+    page: this,
+    haggerston: haggerston
+  }).extend(this.templateData);
 
   var rendered = swig.compileFile(this.template).render(data);
   return rendered;
