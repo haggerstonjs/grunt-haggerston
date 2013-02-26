@@ -30,7 +30,9 @@ exports.getChildren = function(page, url) {
 };
 
 exports.findInPath = function(page, searchPath) {
-  searchPath = searchPath || './';
+  if (searchPath === void 0) {
+    searchPath = './';
+  }
   if (searchPath.indexOf('./') === 0) {
     searchPath = path.join(page.path, searchPath.substr(2));
   }
@@ -47,4 +49,10 @@ exports.sort = function(pages, key) {
 
 exports.where = function(pages, props) {
   return _(pages).where(props);
+};
+
+exports.lastModified = function(page)
+{
+  var stat = require('fs').statSync(page.jsonFile);
+  return stat.mtime;
 };

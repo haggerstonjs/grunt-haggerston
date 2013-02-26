@@ -27,8 +27,16 @@ var Page = function(haggerston, jsonFile) {
   this.jsonPath = path.dirname(jsonFile);
   this.filename = path.basename(jsonFile, '.json') + (jsonData.extension || '.html');
   this.path = this.urlPath = path.relative(Page.contentPath, this.jsonPath);
-  this.url = path.join(this.urlPath, this.filename);
+  this.prettyUrl = this.url = path.join(this.urlPath, this.filename);
   this.children = [];
+
+  if (this.filename === 'index.html') {
+    if (this.path === '') {
+      this.prettyUrl = '';
+    } else {
+      this.prettyUrl = path.dirname(this.prettyUrl) + path.sep;
+    }
+  }
 
   // Copy over properties from the passed json data onto this object
   _(this).extend(jsonData);

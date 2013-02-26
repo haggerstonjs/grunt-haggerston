@@ -32,7 +32,7 @@ exports.haggerston = {
   },
   generatedHtml: function(test) {
 
-    var expectedHtml = grunt.file.expand('test/expected/**/*.html');
+    var expectedHtml = grunt.file.expand('test/expected/**/*.*');
     test.expect(expectedHtml.length);
 
     expectedHtml.forEach(
