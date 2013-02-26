@@ -9,6 +9,7 @@
 'use strict';
 
 var path = require('path');
+var _ = require('underscore');
 
 exports.linkTo = function(fromPage, toPage) {
   var relativeLink = path.relative(fromPage.path , toPage.url);
@@ -28,7 +29,10 @@ exports.findInPath = function(page, searchPath) {
   return page.children;
 };
 
-exports.basePath = function(page)
-{
+exports.basePath = function(page) {
   return path.relative(page.path , '') + path.sep;
+};
+
+exports.sort = function(pages, key) {
+  return _(pages).sortBy(key);
 };

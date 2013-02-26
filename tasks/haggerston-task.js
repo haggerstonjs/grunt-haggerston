@@ -53,7 +53,7 @@ module.exports = function(grunt) {
     haggerston.pages.forEach(function(page) {
       var outFilePath = path.join(options.out, page.url);
       grunt.verbose.writeln('Generating ' + page.jsonFile.cyan + ' -> ' + outFilePath.cyan);
-      grunt.file.write(outFilePath, page.render());
+      grunt.file.write(outFilePath, page.render(haggerston));
     });
 
   });
