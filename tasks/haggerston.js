@@ -43,17 +43,18 @@ module.exports = function(grunt) {
 
     var pagesByPath = {};
 
+    // Create pages
     jsonFiles.forEach(function(jsonFile) {
       var page = new Page(jsonFile);
       pages.push(page);
       pagesByPath[page.path] = page;
     });
 
-    // Render each file page to a file
+    // Generate page hierarchy
     pages.forEach(function(page) {
-      // console.log(page);
-      var pathParts = page.path.split(path.sep),
-          parentPage;
+      var pathParts = page.path.split(path.sep);
+      var parentPage;
+
       while (pathParts.length) {
         pathParts.pop();
         if (parentPage = pagesByPath[pathParts.join(path.sep)]) {
@@ -63,9 +64,14 @@ module.exports = function(grunt) {
           break;
         }
       }
+    });
+
+
+    // Render each file page to a file
+    pages.forEach(function(page) {
 
       var outFilePath = path.join(options.out, page.url);
-      grunt.log.writeln('Generating ' + page.jsonFile.cyan + ' -> ' + outFilePath.cyan);
+      grunt.verbose.writeln('Generating ' + page.jsonFile.cyan + ' -> ' + outFilePath.cyan);
       grunt.file.write(outFilePath, page.render());
     });
 
