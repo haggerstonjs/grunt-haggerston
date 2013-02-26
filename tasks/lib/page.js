@@ -14,13 +14,14 @@ var path = require('path'),
     swig = require('swig');
 
 // The Page class represents a page of site that should be rendered to html
-var Page = function(jsonFile) {
+var Page = function(haggerston, jsonFile) {
 
   var self = this;
 
   var jsonData = grunt.file.readJSON(jsonFile);
 
   // Set various path and filename strings
+  this.haggerston = haggerston;
   this.jsonFile = jsonFile;
   this.jsonPath = path.dirname(jsonFile);
   this.filename = path.basename(jsonFile, '.json') + (jsonData.extension || '.html');

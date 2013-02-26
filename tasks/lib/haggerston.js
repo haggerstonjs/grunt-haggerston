@@ -20,9 +20,11 @@ var Haggerston = function(contentPath, jsonFiles) {
 
   var pagesByPath = this.pagesByPath = {};
 
+  var haggerston = this;
+
   // Create pages
   jsonFiles.forEach(function(jsonFile) {
-    var page = new Page(jsonFile);
+    var page = new Page(haggerston, jsonFile);
     pages.push(page);
     pagesByPath[page.path] = page;
   });
