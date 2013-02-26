@@ -2,6 +2,8 @@
 {% block bodyContent %}
   <h1>Blog</h1>
   <ul>
-    <li>List of stuff in {{ path }}</li>
+    {% for child in page.children %}
+      <li><a href="{{ page|haggerstonLink(child) }}">{{ child.templateData.title }}</a></li>
+    {% endfor %}
   </ul>
 {% endblock %}

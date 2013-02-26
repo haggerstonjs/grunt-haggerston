@@ -32,7 +32,8 @@ module.exports = function(grunt) {
 
     // Set base path that swig will look inside for template files
     swig.init({
-      root: templatesPath
+      root: templatesPath,
+      filters: require('./lib/haggerston-filters')
     });
 
     // Grab array of json file paths from the src folder
