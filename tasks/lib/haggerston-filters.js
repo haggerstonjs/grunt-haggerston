@@ -36,3 +36,7 @@ exports.basePath = function(page) {
 exports.sort = function(pages, key) {
   return _(pages).sortBy(key);
 };
+
+exports.where = function(pages, props) {
+  return _(pages).where(props);
+};
