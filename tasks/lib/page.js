@@ -8,10 +8,11 @@
 
 'use strict';
 
-var path = require('path'),
-    grunt = require('grunt'),
-    marked = require('marked'),
-    swig = require('swig');
+var path = require('path');
+var grunt = require('grunt');
+var marked = require('marked');
+var swig = require('swig');
+var _ = require('underscore');
 
 // The Page class represents a page of site that should be rendered to html
 var Page = function(haggerston, jsonFile) {
@@ -29,10 +30,8 @@ var Page = function(haggerston, jsonFile) {
   this.url = path.join(this.urlPath, this.filename);
   this.children = [];
 
-   // Copy over properties from the passed json data onto this object
-  for (var prop in jsonData) {
-    this[prop] = jsonData[prop];
-  }
+  // Copy over properties from the passed json data onto this object
+  _(this).extend(jsonData);
 
   // A page must have template data to render if it wasn't already specified in the .json
   this.templateData = this.templateData || {};
@@ -59,14 +58,11 @@ var Page = function(haggerston, jsonFile) {
 Page.prototype.render = function(haggerston) {
   // Create an intermediate data provider that will combine the properties of templateData
   // with this page object.
-  var templateDataProvider = {};
-  for (var prop in this.templateData) {
-    templateDataProvider[prop] = this.templateData[prop];
-  }
-  templateDataProvider.page = this;
-  templateDataProvider.haggerston = haggerston;
+  var data = _({}).extend(this.templateData);
+  data.page = this;
+  data.haggerston = haggerston;
 
-  var rendered = swig.compileFile(this.template).render(templateDataProvider);
+  var rendered = swig.compileFile(this.template).render(data);
   return rendered;
 };
 
