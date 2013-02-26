@@ -29,8 +29,8 @@ module.exports = function(grunt) {
       grunt.fail.warn('options.src is not a valid directory');
     }
 
-    var contentPath = path.join(options.src, 'content');
-    var templatesPath = path.join(options.src, 'templates');
+    var contentPath = options.contentPath || path.join(options.src, 'content');
+    var templatesPath = options.templatesPath || path.join(options.src, 'templates');
 
     // Initialise swig with the relevant options
     swig.init({
