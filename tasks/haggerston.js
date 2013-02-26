@@ -8,10 +8,10 @@
 
 'use strict';
 
-var path = require('path'),
-    swig = require('swig');
+var path = require('path');
+var swig = require('swig');
 
-var Page = require('./lib/page');
+var Haggerston = require('./lib/haggerston');
 
 module.exports = function(grunt) {
   grunt.registerTask('haggerston', 'Your task description goes here.', function() {
@@ -28,8 +28,6 @@ module.exports = function(grunt) {
     var contentPath = path.join(options.src, 'content');
     var templatesPath = path.join(options.src, 'templates');
 
-    Page.contentPath = contentPath;
-
     // Set base path that swig will look inside for template files
     swig.init({
       root: templatesPath,
@@ -39,41 +37,14 @@ module.exports = function(grunt) {
     // Grab array of json file paths from the src folder
     var jsonFiles = grunt.file.expand(options.src + '/**/*.json');
 
-    // Create array of Page objects that need to be rendered to html files
-    var pages = [];
-
-    var pagesByPath = {};
-
-    // Create pages
-    jsonFiles.forEach(function(jsonFile) {
-      var page = new Page(jsonFile);
-      pages.push(page);
-      pagesByPath[page.path] = page;
-    });
-
-    // Generate page hierarchy
-    pages.forEach(function(page) {
-      var pathParts = page.path.split(path.sep);
-      var parentPage;
-
-      while (pathParts.length) {
-        pathParts.pop();
-        if (parentPage = pagesByPath[pathParts.join(path.sep)]) {
-          if (parentPage !== page) {
-            parentPage.children.push(page);
-          }
-          break;
-        }
-      }
-    });
-
+    var haggerston = new Haggerston(contentPath, jsonFiles);
 
     // Render each file page to a file
-    pages.forEach(function(page) {
+    haggerston.pages.forEach(function(page) {
 
       var outFilePath = path.join(options.out, page.url);
       grunt.verbose.writeln('Generating ' + page.jsonFile.cyan + ' -> ' + outFilePath.cyan);
-      grunt.file.write(outFilePath, page.render());
+      grunt.file.write(outFilePath, page.render(haggerston));
     });
 
   });

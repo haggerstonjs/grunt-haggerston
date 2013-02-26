@@ -55,7 +55,7 @@ var Page = function(jsonFile) {
   findAndParseMarkdown(this.templateData);
 };
 
-Page.prototype.render = function() {
+Page.prototype.render = function(haggerston) {
   // Create an intermediate data provider that will combine the properties of templateData
   // with this page object.
   var templateDataProvider = {};
@@ -63,6 +63,7 @@ Page.prototype.render = function() {
     templateDataProvider[prop] = this.templateData[prop];
   }
   templateDataProvider.page = this;
+  templateDataProvider.haggerston = haggerston;
 
   var rendered = swig.compileFile(this.template).render(templateDataProvider);
   return rendered;

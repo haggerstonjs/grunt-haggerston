@@ -2,8 +2,8 @@
 {% block bodyContent %}
   <h1>Blog</h1>
   <ul>
-    {% for child in page.children %}
-      <li><a href="{{ page|haggerstonLink(child) }}">{{ child.templateData.title }}</a></li>
+    {% for child in haggerston|findChildren(page,path) %}
+      <li><a href="{{ haggerston|linkTo(page,child) }}">{{ child.templateData.title }}</a></li>
     {% endfor %}
   </ul>
 {% endblock %}
