@@ -1,0 +1,7 @@
+{
+  "generateFunction": "generateTagPages",
+  "generateFunctionData": {
+    "template":"tag-page.html",
+    "path": "blog/"
+  }
+}

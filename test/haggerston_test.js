@@ -57,13 +57,22 @@ exports.haggerston = {
   {
     test.expect(3);
 
-    var haggerston = new Haggerston('test/fixtures/content');
+    var haggerston = new Haggerston(
+        'test/fixtures/content',
+        {
+          generateTagPages: function() {
+            return [];
+          }
+        }
+    );
 
     var allPages = haggerston.find('');
     test.equal(
         allPages.length,
-        grunt.file.expand('test/fixtures/content/**/*.json').length,
-        'The number of pages should under the root should equal the number of JSON files supplied'
+        6,
+        'There should be six generated pages'
+//        grunt.file.expand('test/fixtures/content/**/*.json').length,
+//        'The number of pages should under the root should equal the number of JSON files supplied'
     );
 
     var blogPages = haggerston.find('blog/');

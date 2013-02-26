@@ -15,11 +15,9 @@ var swig = require('swig');
 var _ = require('underscore');
 
 // The Page class represents a page of site that should be rendered to html
-var Page = function(haggerston, jsonFile) {
+var Page = function(haggerston, jsonFile, jsonData) {
 
   var self = this;
-
-  var jsonData = grunt.file.readJSON(jsonFile);
 
   // Set various path and filename strings
   this.haggerston = haggerston;

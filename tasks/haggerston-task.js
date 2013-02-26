@@ -20,6 +20,7 @@ module.exports = function(grunt) {
     var options = this.options({
           src: 'src',
           out: 'out',
+          generateFunctions: {},
           swigFilters: {},
           swigTags: {},
           swigExtensions: {}
@@ -44,7 +45,7 @@ module.exports = function(grunt) {
       extensions: options.swigExtensions
     });
 
-    var haggerston = new Haggerston(contentPath);
+    var haggerston = new Haggerston(contentPath, options.generateFunctions);
 
     // Render each file page to a file
     haggerston.pages.forEach(function(page) {

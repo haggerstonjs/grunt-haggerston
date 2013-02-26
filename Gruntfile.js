@@ -32,7 +32,18 @@ module.exports = function(grunt) {
     haggerston: {
       options: {
         src: 'test/fixtures',
-        out: 'tmp'
+        out: 'tmp',
+        generateFunctions: {
+          generateTagPages: function(haggerston, jsonFile, data)
+          {
+            // TODO: Create the pages we want returning an array of:
+//            {
+//              file: 'name/of/generating/file.json',
+//              data: jsonDataThatWillBeUsedToConstructNewPage
+//            }
+            return [];
+          }
+        }
       }
     },
 

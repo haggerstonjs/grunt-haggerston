@@ -13,7 +13,7 @@ var grunt = require('grunt');
 var _ = require('underscore');
 var Page = require('./page');
 
-var Haggerston = function(contentPath) {
+var Haggerston = function(contentPath, generateFunctions) {
 
   Page.contentPath = contentPath;
 
@@ -25,13 +25,34 @@ var Haggerston = function(contentPath) {
 
   var pagesByPath = this.pagesByPath = {};
 
+  var generatePages = [];
+
   var haggerston = this;
 
   // Create pages
   jsonFiles.forEach(function(jsonFile) {
-    var page = new Page(haggerston, jsonFile);
-    pages.push(page);
-    pagesByPath[page.path] = page;
+    var jsonData = grunt.file.readJSON(jsonFile);
+
+    if (jsonData.generateFunction) {
+      generatePages.push({
+        file: jsonFile,
+        data: jsonData
+      });
+    } else {
+      var page = new Page(haggerston, jsonFile, jsonData);
+      pages.push(page);
+      pagesByPath[page.path] = page;
+    }
+  });
+
+  // Create generated pages
+  generatePages.forEach(function(generatePageData) {
+    var generatedPagesData = generateFunctions[generatePageData.data.generateFunction](haggerston, generatePageData.file, generatePageData.data.generateFunctionData);
+    generatedPagesData.forEach(function(pageData) {
+      var page = new Page(haggerston, pageData.file, pageData.data);
+      pages.push(page);
+      pagesByPath[page.path] = page;
+    });
   });
 
   // Generate page hierarchy
