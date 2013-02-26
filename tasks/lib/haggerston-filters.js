@@ -27,3 +27,8 @@ exports.findInPath = function(page, searchPath) {
   }
   return page.children;
 };
+
+exports.basePath = function(page)
+{
+  return path.relative(page.path , '') + path.sep;
+};
