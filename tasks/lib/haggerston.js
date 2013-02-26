@@ -91,4 +91,8 @@ Haggerston.prototype.findPage = function(url) {
   );
 };
 
+Haggerston.prototype.filter = function(iterator) {
+  return this.pages.filter(iterator);
+}
+
 module.exports = Haggerston;

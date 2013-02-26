@@ -58,7 +58,7 @@ var Page = function(haggerston, jsonFile, jsonData) {
     }
   }
 
-  findAndParseMarkdown(this.templateData);
+//  findAndParseMarkdown(this.templateData);
 };
 
 Page.prototype.render = function(haggerston) {

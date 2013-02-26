@@ -1,0 +1,9 @@
+{% extends 'site.html' %}
+{% block bodyContent %}
+  <h1>{{tag}}</h1>
+  <ul>
+    {% for child in page.childPages %}
+      <li><a href="{{ page|linkTo(child) }}">{{ child.templateData.title }}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}
