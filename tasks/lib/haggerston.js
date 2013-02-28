@@ -44,24 +44,25 @@ Haggerston.prototype.render = function(destPath) {
       return function(cb) {
         middleware(pages, cb, haggerston);
       };
-    })
+    }),
+    function(error, res) {
+      // render
+      _(pages).each(function(page) {
+        var outFilePath = path.join(destPath, page.url);
+        grunt.verbose.writeln('Generating ' + outFilePath.cyan);
+
+        // Create an intermediate data provider that will combine the properties of the pages templateData.
+        var data = _({
+          page: page,
+          pages: pages
+        }).extend(page.templateData);
+
+        var rendered = swig.compileFile(page.template).render(data);
+
+        grunt.file.write(outFilePath, rendered);
+      });
+    }
   );
-
-  // render
-  _(pages).each(function(page) {
-    var outFilePath = path.join(destPath, page.url);
-    grunt.verbose.writeln('Generating ' + outFilePath.cyan);
-
-    // Create an intermediate data provider that will combine the properties of the pages templateData.
-    var data = _({
-      page: page,
-      pages: pages
-    }).extend(page.templateData);
-
-    var rendered = swig.compileFile(page.template).render(data);
-
-    grunt.file.write(outFilePath, rendered);
-  });
 };
 
 
