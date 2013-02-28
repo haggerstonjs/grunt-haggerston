@@ -37,6 +37,6 @@ module.exports = function() {
       pagePath = path.join(haggerston.srcPath, page.path);
       findAndParseMarkdown(page.templateData);
     });
-    next(pages);
+    next();
   };
 };
