@@ -4,6 +4,12 @@ var grunt = require('grunt');
 var Haggerston = require('../tasks/lib/haggerston');
 var _ = require('underscore');
 
+var haggerstonFilters = require('../tasks/lib/haggerston-filters');
+
+//haggerstonFilters.lastModified = function(page) {
+//  return 'YYYY-mm-dd';
+//};
+
 /*
   ======== A Handy Little Nodeunit Reference ========
   https://github.com/caolan/nodeunit
@@ -51,43 +57,6 @@ exports.haggerston = {
         }
     );
 
-    test.done();
-  },
-  findPage: function(test)
-  {
-    test.expect(3);
-
-    var haggerston = new Haggerston(
-        'test/fixtures/content',
-        {
-          generateTagPages: function() {
-            return [];
-          }
-        }
-    );
-
-    var allPages = haggerston.find('');
-    test.equal(
-        allPages.length,
-        6,
-        'There should be six generated pages'
-//        grunt.file.expand('test/fixtures/content/**/*.json').length,
-//        'The number of pages should under the root should equal the number of JSON files supplied'
-    );
-
-    var blogPages = haggerston.find('blog/');
-    test.equal(
-        blogPages.length,
-        2,
-        'There should be two pages under blog'
-    );
-
-    var blogListPage = haggerston.findPage('blog/index.html');
-    test.equal(
-        _(blogPages).pluck('url').join(','),
-        _(blogListPage.children).pluck('url').join(','),
-        'The blog pages should be all the children of the blogListPage'
-    );
     test.done();
   }
 };

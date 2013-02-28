@@ -19,40 +19,38 @@ exports.linkTo = function(fromPage, toPage) {
   return relativeLink;
 };
 
-exports.findPage = function(page, url) {
-  url = url || page.url;
-  return page.haggerston.findPage(url);
-};
-
-exports.getChildren = function(page, url) {
-  url = url || page.url;
-  return page.haggerston.findPage(url).children;
-};
-
-exports.findInPath = function(page, searchPath) {
-  if (searchPath === void 0) {
-    searchPath = './';
-  }
-  if (searchPath.indexOf('./') === 0) {
-    searchPath = path.join(page.path, searchPath.substr(2));
-  }
-  return page.haggerston.find(searchPath);
-};
-
 exports.basePath = function(page) {
   return path.relative(page.path , '') + path.sep;
+};
+
+exports.where = function(pages, propertyName, value) {
+  return _(pages).filter(function(page) {
+    return page[propertyName] === value;
+  });
+};
+
+exports.reject = function(pages, propertyName, value) {
+  return _(pages).reject(function(page) {
+    return page[propertyName] === value;
+  });
+};
+
+exports.matches = function(pages, propertyName, value) {
+  return _(pages).filter(function(page) {
+    var reg = new RegExp(value);
+    if (!page[propertyName].match(reg)) {
+      return false;
+    }
+    return true;
+  });
 };
 
 exports.sort = function(pages, key) {
   return _(pages).sortBy(key);
 };
 
-exports.where = function(pages, props) {
-  return _(pages).where(props);
-};
-
-exports.lastModified = function(page)
-{
-  var stat = require('fs').statSync(page.jsonFile);
-  return stat.mtime;
+exports.lastModified = function(page) {
+//  var stat = require('fs').statSync(page.jsonFile);
+//  return stat.mtime;
+  return '2013-02-01';
 };

@@ -4,10 +4,10 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-  {% for child in page|findInPath('') %}
+  {% for child in pages %}
     <url>
       <loc>{{host}}{{child.prettyUrl}}</loc>
-      <lastmod>{{page|lastModified|date('c')}}</lastmod>
+      <lastmod>{{child|lastModified|date('c')}}</lastmod>
     </url>
   {% endfor %}
 </urlset>

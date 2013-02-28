@@ -9,7 +9,6 @@
 'use strict';
 
 var path = require('path');
-var swig = require('swig');
 var _ = require('underscore');
 
 // The Page class represents a page of site that should be rendered to html
@@ -32,17 +31,6 @@ var Page = function(url, jsonData) {
 
   // Copy over properties from the passed json data onto this object
   _(this).extend(jsonData);
-};
-
-Page.prototype.render = function(haggerston) {
-  // Create an intermediate data provider that will combine the properties of templateData
-  // with this page object.
-  var data = _({
-    page: this
-  }).extend(this.templateData);
-
-  var rendered = swig.compileFile(this.template).render(data);
-  return rendered;
 };
 
 module.exports = Page;

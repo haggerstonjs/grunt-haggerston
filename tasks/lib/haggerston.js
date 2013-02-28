@@ -12,6 +12,7 @@ var grunt = require('grunt');
 var _ = require('underscore');
 var async = require('async');
 var path = require('path');
+var swig = require('swig');
 var Page = require('./page');
 
 var Haggerston = function(srcPath) {
@@ -50,7 +51,16 @@ Haggerston.prototype.render = function(destPath) {
   _(pages).each(function(page) {
     var outFilePath = path.join(destPath, page.url);
     grunt.verbose.writeln('Generating ' + outFilePath.cyan);
-    grunt.file.write(outFilePath, page.render());
+
+    // Create an intermediate data provider that will combine the properties of the pages templateData.
+    var data = _({
+      page: page,
+      pages: pages
+    }).extend(page.templateData);
+
+    var rendered = swig.compileFile(page.template).render(data);
+
+    grunt.file.write(outFilePath, rendered);
   });
 };
 

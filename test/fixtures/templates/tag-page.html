@@ -2,7 +2,7 @@
 {% block bodyContent %}
   <h1>{{tag}}</h1>
   <ul>
-    {% for child in page.childPages %}
+    {% for child in pages|matches({tag:tag}) %}
       <li><a href="{{ page|linkTo(child) }}">{{ child.templateData.title }}</a></li>
     {% endfor %}
   </ul>
