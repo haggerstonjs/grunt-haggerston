@@ -50,7 +50,10 @@ Haggerston.prototype.render = function(destPath) {
       return function(pages, cb) {
         middleware(
           pages,
-          cb,
+          function(pages)
+          {
+            cb(null, pages);
+          },
           options
         );
       };

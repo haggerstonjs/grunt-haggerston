@@ -37,6 +37,6 @@ module.exports = function() {
       pagePath = path.join(options.contentPath, page.path);
       findAndParseMarkdown(page.templateData);
     });
-    next(null, pages);
+    next(pages);
   };
 };
