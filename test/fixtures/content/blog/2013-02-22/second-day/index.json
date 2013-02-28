@@ -2,6 +2,7 @@
   "template":"blog-post.html",
   "templateData": {
     "title": "Second day",
-    "content": "index.md"
+    "content": "index.md",
+    "tags": ["js", "day2"]
   }
 }

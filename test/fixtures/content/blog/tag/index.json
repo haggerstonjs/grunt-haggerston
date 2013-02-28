@@ -1,0 +1,7 @@
+{
+  "hideInList": true,
+  "template": "category-page.html",
+  "generate": {
+    "category": "tags"
+  }
+}

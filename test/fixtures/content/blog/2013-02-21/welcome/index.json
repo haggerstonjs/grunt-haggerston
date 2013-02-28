@@ -2,6 +2,7 @@
   "template":"blog-post.html",
   "templateData": {
     "title": "Welcome to my blog",
-    "content": "index.md"
+    "content": "index.md",
+    "tags": ["js", "day1"]
   }
 }
