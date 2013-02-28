@@ -38,24 +38,25 @@ Haggerston.prototype.use = function(middleware) {
 Haggerston.prototype.render = function(destPath) {
   var pages = this.pages;
   var options = this.options;
+
   // Apply middleware
   async.waterfall(
-    _(this.middlewares).map(function(middleware, i) {
-      return function(p, cb) {
-        if (i === 0) {
-          cb = p;
-          p = pages;
-        }
+    [
+      // Waterfall doesn't pass an argument into the first function
+      function(cb) {
+        cb(null, pages)
+      }
+    ].concat(_(this.middlewares).map(function(middleware) {
+      return function(pages, cb) {
         middleware(
-            p,
-            cb,
-            options
+          pages,
+          cb,
+          options
         );
       };
-    }),
+    })),
     function(error, pages) {
       // Render pages
-      console.log('at end', arguments);
       _(pages).each(function(page) {
         var outFilePath = path.join(destPath, page.url);
         grunt.verbose.writeln('Generating ' + outFilePath.cyan);
