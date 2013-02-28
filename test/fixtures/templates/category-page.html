@@ -1,8 +1,8 @@
 {% extends 'site.html' %}
 {% block bodyContent %}
-  <h1>{{tag}}</h1>
+  <h1>{{category}}</h1>
   <ul>
-    {% for child in pages|matches({tag:tag}) %}
+    {% for child in subpages %}
       <li><a href="{{ page|linkTo(child) }}">{{ child.templateData.title }}</a></li>
     {% endfor %}
   </ul>

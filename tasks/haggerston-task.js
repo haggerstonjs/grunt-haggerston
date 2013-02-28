@@ -57,6 +57,7 @@ module.exports = function(grunt) {
 
     haggerston.use(require('./lib/middleware/json')());
     haggerston.use(require('./lib/middleware/markdown')());
+    haggerston.use(require('./lib/middleware/generate')());
 
     // Render the pages, this will call the async done method when finished
     haggerston.render(options.dest, done);
