@@ -19,8 +19,7 @@ module.exports = function(grunt) {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
           src: 'src',
-          out: 'out',
-          generateFunctions: {},
+          dest: 'out',
           swigFilters: {},
           swigTags: {},
           swigExtensions: {}
@@ -45,14 +44,11 @@ module.exports = function(grunt) {
       extensions: options.swigExtensions
     });
 
-    var haggerston = new Haggerston(contentPath, options.generateFunctions);
+    var haggerston = new Haggerston(contentPath);
 
-    // Render each file page to a file
-    haggerston.pages.forEach(function(page) {
-      var outFilePath = path.join(options.out, page.url);
-      grunt.verbose.writeln('Generating ' + page.jsonFile.cyan + ' -> ' + outFilePath.cyan);
-      grunt.file.write(outFilePath, page.render(haggerston));
-    });
+    // TODO: Use middleware...
+
+    haggerston.render(options.dest);
 
   });
 };

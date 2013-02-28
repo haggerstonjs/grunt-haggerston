@@ -32,8 +32,7 @@ module.exports = function(grunt) {
     haggerston: {
       options: {
         src: 'test/fixtures',
-        out: 'tmp',
-        generateFunctions: require('./tasks/lib/generate-tag-pages')
+        dest: 'tmp'
       }
     },
 
