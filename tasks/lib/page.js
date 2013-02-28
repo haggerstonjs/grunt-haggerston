@@ -2,7 +2,7 @@
  * grunt-haggerston
  * https://github.com/vitch/grunt-haggerston
  *
- * Copyright (c) 2013 Kelvin Luck
+ * Copyright (c) 2013 Kelvin Luck, Matt Sweetman
  * Licensed under the MIT license.
  */
 
@@ -38,8 +38,7 @@ Page.prototype.render = function(haggerston) {
   // Create an intermediate data provider that will combine the properties of templateData
   // with this page object.
   var data = _({
-    page: this,
-    haggerston: haggerston
+    page: this
   }).extend(this.templateData);
 
   var rendered = swig.compileFile(this.template).render(data);
