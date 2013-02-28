@@ -2,7 +2,7 @@
  * grunt-haggerston
  * https://github.com/vitch/grunt-haggerston
  *
- * Copyright (c) 2013 Kelvin Luck
+ * Copyright (c) 2013 Kelvin Luck, Matt Sweetman
  * Licensed under the MIT license.
  */
 
@@ -18,23 +18,29 @@ module.exports = function(grunt) {
   grunt.registerTask('haggerston', 'Your task description goes here.', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-          src: 'src',
-          dest: 'out',
-          swigFilters: {},
-          swigTags: {},
-          swigExtensions: {}
-        });
+        src: 'src',
+        dest: 'out'
+      });
+
+    // Create defaults for the content & template paths if not been specified in the options
+    options.contentPath = options.contentPath || path.join(options.src, 'content');
+    options.templatesPath = options.templatesPath || path.join(options.src, 'templates');
 
     if (!grunt.file.isDir(options.src)) {
-      grunt.fail.warn('options.src is not a valid directory');
+      grunt.fail.warn(options.src + ' is not a directory.');
     }
 
-    var contentPath = options.contentPath || path.join(options.src, 'content');
-    var templatesPath = options.templatesPath || path.join(options.src, 'templates');
+    if (!grunt.file.isDir(options.contentPath)) {
+      grunt.fail.warn(options.contentPath + ' is not a directory.');
+    }
+
+    if (!grunt.file.isDir(options.templatesPath)) {
+      grunt.fail.warn(options.templatesPath + ' is not a directory.');
+    }
 
     // Initialise swig with the relevant options
     swig.init({
-      root: templatesPath,
+      root: options.templatesPath,
       filters: _.extend(
         {},
         require('./lib/swig/filters'),
@@ -44,11 +50,10 @@ module.exports = function(grunt) {
       extensions: options.swigExtensions
     });
 
-    var haggerston = new Haggerston(contentPath);
+    var haggerston = new Haggerston(options);
 
     haggerston.use(require('./lib/middleware/markdown')());
 
     haggerston.render(options.dest);
-
   });
 };

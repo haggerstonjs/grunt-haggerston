@@ -15,17 +15,17 @@ var path = require('path');
 var swig = require('swig');
 var Page = require('./page');
 
-var Haggerston = function(srcPath) {
+var Haggerston = function(options) {
+  this.options = options;
   this.middlewares = [];
   this.pages = [];
-  this.srcPath = srcPath;
 
-  var jsonFiles = grunt.file.expand(srcPath + '/**/*.json');
+  var jsonFiles = grunt.file.expand(options.contentPath + '/**/*.json');
 
   // Generate a Page object corresponding to each JSON file
   _(jsonFiles).each(function(jsonFile) {
     var jsonData = grunt.file.readJSON(jsonFile);
-    var pageUrl = path.relative(srcPath, jsonFile).replace('.json', jsonData.extension || '.html');
+    var pageUrl = path.relative(options.contentPath, jsonFile).replace('.json', jsonData.extension || '.html');
     var page = new Page(pageUrl, jsonData);
     this.pages.push(page);
   }, this);
@@ -37,7 +37,7 @@ Haggerston.prototype.use = function(middleware) {
 
 Haggerston.prototype.render = function(destPath) {
   var pages = this.pages;
-  var haggerston = this;
+  var options = this.options;
 
   // Apply middleware
   async.series(
@@ -46,14 +46,14 @@ Haggerston.prototype.render = function(destPath) {
         middleware(
             pages,
             function() {
-              cb(null)
+              cb(null);
             },
-            haggerston
+            options
         );
       };
     }),
     function(error, res) {
-      // render
+      // Render pages
       _(pages).each(function(page) {
         var outFilePath = path.join(destPath, page.url);
         grunt.verbose.writeln('Generating ' + outFilePath.cyan);
@@ -71,7 +71,5 @@ Haggerston.prototype.render = function(destPath) {
     }
   );
 };
-
-
 
 module.exports = Haggerston;

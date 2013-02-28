@@ -32,9 +32,9 @@ module.exports = function() {
     }
   }
 
-  return function (pages, next, haggerston) {
+  return function (pages, next, options) {
     _(pages).each(function(page) {
-      pagePath = path.join(haggerston.srcPath, page.path);
+      pagePath = path.join(options.contentPath, page.path);
       findAndParseMarkdown(page.templateData);
     });
     next();
