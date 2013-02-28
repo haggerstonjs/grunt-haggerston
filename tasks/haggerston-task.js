@@ -22,7 +22,8 @@ module.exports = function(grunt) {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
         src: 'src',
-        dest: 'out'
+        dest: 'out',
+        middleware: require('./lib/middleware/default')
       });
 
     // Create defaults for the content & template paths if not been specified in the options
@@ -55,9 +56,9 @@ module.exports = function(grunt) {
 
     var haggerston = new Haggerston(options);
 
-    haggerston.use(require('./lib/middleware/json')());
-    haggerston.use(require('./lib/middleware/markdown')());
-    haggerston.use(require('./lib/middleware/generate')());
+    _(options.middleware).each(function(middleware) {
+      haggerston.use(middleware);
+    });
 
     // Render the pages, this will call the async done method when finished
     haggerston.render(options.dest, done);
