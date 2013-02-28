@@ -7,32 +7,38 @@
   
     <url>
       <loc>http://www.example.com/about/</loc>
-      <lastmod>2013-02-26T22:08:57.000Z</lastmod>
     </url>
   
     <url>
       <loc>http://www.example.com/blog/2013-02-21/welcome/</loc>
-      <lastmod>2013-02-26T22:08:57.000Z</lastmod>
     </url>
   
     <url>
       <loc>http://www.example.com/blog/2013-02-22/second-day/</loc>
-      <lastmod>2013-02-26T22:08:57.000Z</lastmod>
     </url>
   
     <url>
       <loc>http://www.example.com/blog/</loc>
-      <lastmod>2013-02-26T22:08:57.000Z</lastmod>
+    </url>
+  
+    <url>
+      <loc>http://www.example.com/blog/tag/js.html</loc>
+    </url>
+  
+    <url>
+      <loc>http://www.example.com/blog/tag/day1.html</loc>
+    </url>
+  
+    <url>
+      <loc>http://www.example.com/blog/tag/day2.html</loc>
     </url>
   
     <url>
       <loc>http://www.example.com/</loc>
-      <lastmod>2013-02-26T22:08:57.000Z</lastmod>
     </url>
   
     <url>
       <loc>http://www.example.com/sitemap.xml</loc>
-      <lastmod>2013-02-26T22:08:57.000Z</lastmod>
     </url>
   
 </urlset>

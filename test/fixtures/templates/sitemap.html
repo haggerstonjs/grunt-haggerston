@@ -7,7 +7,6 @@
   {% for child in pages %}
     <url>
       <loc>{{host}}{{child.prettyUrl}}</loc>
-      <lastmod>{{child|lastModified|date('c')}}</lastmod>
     </url>
   {% endfor %}
 </urlset>
