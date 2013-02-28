@@ -35,7 +35,7 @@ Haggerston.prototype.use = function(middleware) {
   this.middlewares.push(middleware);
 };
 
-Haggerston.prototype.render = function(destPath) {
+Haggerston.prototype.render = function(destPath, done) {
   var pages = this.pages;
   var options = this.options;
 
@@ -44,14 +44,13 @@ Haggerston.prototype.render = function(destPath) {
     [
       // Waterfall doesn't pass an argument into the first function
       function(cb) {
-        cb(null, pages)
+        cb(null, pages);
       }
     ].concat(_(this.middlewares).map(function(middleware) {
       return function(pages, cb) {
         middleware(
           pages,
-          function(pages)
-          {
+          function(pages) {
             cb(null, pages);
           },
           options
@@ -74,6 +73,9 @@ Haggerston.prototype.render = function(destPath) {
 
         grunt.file.write(outFilePath, rendered);
       });
+
+      // The grunt async task callback passed from the haggerston-task
+      done();
     }
   );
 };

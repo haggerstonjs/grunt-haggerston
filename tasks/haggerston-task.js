@@ -16,6 +16,9 @@ var Haggerston = require('../tasks/lib/haggerston');
 
 module.exports = function(grunt) {
   grunt.registerTask('haggerston', 'Your task description goes here.', function() {
+    // The render function is async and will call done() when finished
+    var done = this.async();
+
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
         src: 'src',
@@ -52,8 +55,10 @@ module.exports = function(grunt) {
 
     var haggerston = new Haggerston(options);
 
+    haggerston.use(require('./lib/middleware/json')());
     haggerston.use(require('./lib/middleware/markdown')());
 
-    haggerston.render(options.dest);
+    // Render the pages, this will call the async done method when finished
+    haggerston.render(options.dest, done);
   });
 };
