@@ -46,7 +46,7 @@ module.exports = function(grunt) {
 
     var haggerston = new Haggerston(contentPath);
 
-    // TODO: Use middleware...
+    haggerston.use(require('./lib/middleware/markdown')());
 
     haggerston.render(options.dest);
 

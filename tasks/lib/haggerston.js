@@ -17,6 +17,7 @@ var Page = require('./page');
 var Haggerston = function(srcPath) {
   this.middlewares = [];
   this.pages = [];
+  this.srcPath = srcPath;
 
   var jsonFiles = grunt.file.expand(srcPath + '/**/*.json');
 
@@ -35,12 +36,12 @@ Haggerston.prototype.use = function(middleware) {
 
 Haggerston.prototype.render = function(destPath) {
   var pages = this.pages;
-
+  var haggerston = this;
   // Apply middleware
   async.series(
     _(this.middlewares).map(function(middleware) {
       return function(cb) {
-        middleware(pages, cb);
+        middleware(pages, cb, haggerston);
       };
     })
   );
