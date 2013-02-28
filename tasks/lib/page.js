@@ -18,7 +18,6 @@ var Page = function(url, jsonData) {
   this.prettyUrl = this.url = url;
   this.filename = path.basename(url);
   this.path = path.dirname(url);
-  this.templateData = {};
 
   // Pretty URLs should be directory style for index.html
   if (this.filename === 'index.html') {
@@ -30,7 +29,9 @@ var Page = function(url, jsonData) {
   }
 
   // Copy over properties from the passed json data onto this object
-  _(this).extend(jsonData);
+  _(this).defaults(jsonData);
+
+  this.templateData = this.templateData || {};
 };
 
 module.exports = Page;

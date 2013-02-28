@@ -36,13 +36,12 @@ module.exports = function() {
       if (page.generate) {
         _(getCategorisedPages(pages, page.generate.category)).each(function(subpages, category) {
           var categoryPageUrl = path.join(page.path, category + (page.extension || '.html'));
-          var categoryPage = new Page(categoryPageUrl, {
-              template: page.template,
-              templateData: _.extend({
+          var categoryPage = new Page(categoryPageUrl, _({}).extend(page, {
+              templateData: _.extend({}, page.templateData, {
                 category: category,
                 subpages: subpages
-              }, page.templateData)
-            }
+              })
+            })
           );
           generatedPages.push(categoryPage);
         });
