@@ -1,14 +1,8 @@
 'use strict';
 
 var grunt = require('grunt');
-var Haggerston = require('../tasks/lib/haggerston');
 var _ = require('underscore');
 
-var haggerstonFilters = require('../tasks/lib/haggerston-filters');
-
-//haggerstonFilters.lastModified = function(page) {
-//  return 'YYYY-mm-dd';
-//};
 
 /*
   ======== A Handy Little Nodeunit Reference ========

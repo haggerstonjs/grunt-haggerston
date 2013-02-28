@@ -37,7 +37,7 @@ module.exports = function(grunt) {
       root: templatesPath,
       filters: _.extend(
         {},
-        require('./lib/haggerston-filters'),
+        require('./lib/swig/filters'),
         options.swigFilters
       ),
       tags: options.swigTags,
