@@ -2,6 +2,6 @@
   "template":"blog-list.html",
   "templateData": {
     "title": "Haggerston",
-    "path": "blog/."
+    "path": "/blog/."
   }
 }

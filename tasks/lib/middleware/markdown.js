@@ -14,16 +14,23 @@ var marked = require('marked');
 module.exports = function() {
   'use strict';
 
+  var contentPath;
   var pagePath;
 
-  function findAndParseMarkdown(data) {
-    for (var key in data) {
-      var value = data[key];
+  function findAndParseMarkdown(page) {
+    for (var key in page) {
+      var value = page[key];
       if (typeof value === 'string') {
         // If it's a string then check if the extension is .md and parse it
         if (value.match(/\.md$/)) {
-          var mdPath = path.join(pagePath, value);
-          data[key] = marked(grunt.file.read(mdPath));
+          // Absolute urls are based off the contentPath, not the file system
+          var filePath;
+          if (grunt.file.isPathAbsolute(value)) {
+            filePath = path.join(contentPath, value);
+          } else {
+            filePath = path.join(contentPath, pagePath, value);
+          }
+          page[key] = marked(grunt.file.read(filePath));
         }
       } else if (typeof value === 'object') {
         // Recursively search nested objects
@@ -33,9 +40,10 @@ module.exports = function() {
   }
 
   return function (pages, next, options) {
+    contentPath = options.contentPath;
     _(pages).each(function(page) {
-      pagePath = path.join(options.contentPath, page.path);
-      findAndParseMarkdown(page.templateData);
+      pagePath = page.path;
+      findAndParseMarkdown(page);
     });
     next(pages);
   };

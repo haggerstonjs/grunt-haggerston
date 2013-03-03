@@ -14,18 +14,16 @@ var _ = require('underscore');
 // The Page class represents a page of site that should be rendered to html
 var Page = function(url, jsonData) {
 
-  // Set various path and filename strings
-  this.prettyUrl = this.url = url;
-  this.filename = path.basename(url);
+  // Set various url, path and filename properties
+  this.url = url;
   this.path = path.dirname(url);
+  this.filename = path.basename(url);
 
-  // Pretty URLs should be directory style for index.html
+  // Pretty URLs should be directory style only for index.html
   if (this.filename === 'index.html') {
-    if (this.path === '') {
-      this.prettyUrl = '';
-    } else {
-      this.prettyUrl = path.dirname(this.prettyUrl) + path.sep;
-    }
+    this.prettyUrl = path.join(this.path, path.sep);
+  } else {
+    this.prettyUrl = this.url;
   }
 
   // Copy over properties from the passed json data onto this object

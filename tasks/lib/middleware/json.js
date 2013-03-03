@@ -14,16 +14,23 @@ var marked = require('marked');
 module.exports = function() {
   'use strict';
 
+  var contentPath;
   var pagePath;
 
-  function findAndParseJson(data) {
-    for (var key in data) {
-      var value = data[key];
+  function findAndParseJson(page) {
+    for (var key in page) {
+      var value = page[key];
       if (typeof value === 'string') {
         // If it's a string then check if the extension is .md and parse it
         if (value.match(/\.json$/)) {
-          var jsonPath = path.join(pagePath, value);
-          data[key] = grunt.file.readJSON(jsonPath);
+          // Absolute urls are based off the contentPath, not the file system
+          var filePath;
+          if (grunt.file.isPathAbsolute(value)) {
+            filePath = path.join(contentPath, value);
+          } else {
+            filePath = path.join(contentPath, pagePath, value);
+          }
+          page[key] = grunt.file.readJSON(filePath);
         }
       } else if (typeof value === 'object') {
         // Recursively search nested objects
@@ -33,8 +40,9 @@ module.exports = function() {
   }
 
   return function (pages, next, options) {
+    contentPath = options.contentPath;
     _(pages).each(function(page) {
-      pagePath = path.join(options.contentPath, page.path);
+      pagePath = page.path;
       findAndParseJson(page);
     });
     next(pages);

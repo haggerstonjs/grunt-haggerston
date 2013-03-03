@@ -25,7 +25,7 @@ var Haggerston = function(options) {
   // Generate a Page object corresponding to each JSON file
   _(jsonFiles).each(function(jsonFile) {
     var jsonData = grunt.file.readJSON(jsonFile);
-    var pageUrl = path.relative(options.contentPath, jsonFile).replace('.json', jsonData.extension || '.html');
+    var pageUrl = '/' + path.relative(options.contentPath, jsonFile).replace('.json', jsonData.extension || '.html');
     var page = new Page(pageUrl, jsonData);
     this.pages.push(page);
   }, this);

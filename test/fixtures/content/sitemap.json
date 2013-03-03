@@ -2,6 +2,6 @@
   "template":"sitemap.html",
   "extension": ".xml",
   "templateData": {
-    "host": "http://www.example.com/"
+    "host": "http://www.example.com"
   }
 }
