@@ -10,12 +10,25 @@ var _ = require('underscore');
 var path = require('path');
 var grunt = require('grunt');
 var marked = require('marked');
+var hljs = require('highlight.js');
 
 module.exports = function() {
   'use strict';
 
   var contentPath;
   var pagePath;
+
+  marked.setOptions({
+    highlight: function(code, lang) {
+      var parsed;
+      if (lang) {
+        parsed = hljs.highlight(lang, code).value;
+      } else {
+        parsed = hljs.highlightAuto(code).value;
+      }
+      return parsed;
+    }
+  });
 
   function findAndParseMarkdown(page) {
     for (var key in page) {
