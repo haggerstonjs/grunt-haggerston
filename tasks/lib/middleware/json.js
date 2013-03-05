@@ -9,7 +9,6 @@
 var _ = require('underscore');
 var path = require('path');
 var grunt = require('grunt');
-var marked = require('marked');
 
 module.exports = function() {
   'use strict';
