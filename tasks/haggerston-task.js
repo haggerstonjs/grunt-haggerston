@@ -60,7 +60,8 @@ module.exports = function(grunt) {
       haggerston.use(middleware);
     });
 
-    // Render the pages, this will call the async done method when finished
-    haggerston.render(options.dest, done);
+    // Load the pages, run the middleware, then write them to files.
+    // This will call the async done method when finished.
+    haggerston.start(options.dest, done);
   });
 };

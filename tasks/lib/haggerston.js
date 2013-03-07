@@ -12,7 +12,6 @@ var grunt = require('grunt');
 var _ = require('underscore');
 var async = require('async');
 var path = require('path');
-var swig = require('swig');
 var Page = require('./page');
 
 var Haggerston = function(options) {
@@ -35,7 +34,7 @@ Haggerston.prototype.use = function(middleware) {
   this.middlewares.push(middleware);
 };
 
-Haggerston.prototype.render = function(destPath, done) {
+Haggerston.prototype.start = function(destPath, done) {
   var pages = this.pages;
   var options = this.options;
 
@@ -58,20 +57,11 @@ Haggerston.prototype.render = function(destPath, done) {
       };
     })),
     function(error, pages) {
-      // Render pages
+      // Write pages to files
       _(pages).each(function(page) {
         var outFilePath = path.join(destPath, page.url);
         grunt.verbose.writeln('Generating ' + outFilePath.cyan);
-
-        // Create an intermediate data provider that will combine the properties of the pages templateData.
-        var data = _({
-          page: page,
-          pages: pages
-        }).extend(page.templateData);
-
-        var rendered = swig.compileFile(page.template).render(data);
-
-        grunt.file.write(outFilePath, rendered);
+        grunt.file.write(outFilePath, page.renderedTemplate);
       });
 
       // The grunt async task callback passed from the haggerston-task
