@@ -13,37 +13,24 @@ var grunt = require('grunt');
 module.exports = function() {
   'use strict';
 
-  var contentPath;
-  var pagePath;
-
-  function findAndParseJson(page) {
-    for (var key in page) {
-      var value = page[key];
-      if (typeof value === 'string') {
-        // If it's a string then check if the extension is .md and parse it
-        if (value.match(/\.json$/)) {
-          // Absolute urls are based off the contentPath, not the file system
+  return function (pages, next, options) {
+    _(pages).each(function(page) {
+      // Recursively loop over every property of the page
+      _(page).deepEach(function(value, key, obj) {
+        // Search for string values ending in '.json'
+        if (_.isString(value) && value.match(/\.json$/)) {
+          // Absolute urls are based off the contentPath, not the OS file system
           var filePath;
           if (grunt.file.isPathAbsolute(value)) {
-            filePath = path.join(contentPath, value);
+            filePath = path.join(options.contentPath, value);
           } else {
-            filePath = path.join(contentPath, pagePath, value);
+            filePath = path.join(options.contentPath, page.path, value);
           }
-          page[key] = grunt.file.readJSON(filePath);
+          obj[key] = grunt.file.readJSON(filePath);
         }
-      } else if (typeof value === 'object') {
-        // Recursively search nested objects
-        findAndParseJson(value);
-      }
-    }
-  }
-
-  return function (pages, next, options) {
-    contentPath = options.contentPath;
-    _(pages).each(function(page) {
-      pagePath = page.path;
-      findAndParseJson(page);
+      });
     });
+    
     next(pages);
   };
 };

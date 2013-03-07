@@ -11,6 +11,7 @@
 var path = require('path');
 var swig = require('swig');
 var _ = require('underscore');
+var deepEach = require('./lib/deepeach');
 
 var Haggerston = require('../tasks/lib/haggerston');
 
