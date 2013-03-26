@@ -10,5 +10,6 @@ module.exports = [
   require('./json')(),
   require('./markdown')(),
   require('./generate')(),
-  require('./render')()
+  require('./render')(),
+  require('./highlight')()
 ];

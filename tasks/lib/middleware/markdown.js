@@ -10,22 +10,9 @@ var _ = require('underscore');
 var path = require('path');
 var grunt = require('grunt');
 var marked = require('marked');
-var hljs = require('highlight.js');
 
 module.exports = function() {
   'use strict';
-
-  marked.setOptions({
-    highlight: function(code, lang) {
-      var parsed;
-      if (lang) {
-        parsed = hljs.highlight(lang, code).value;
-      } else {
-        parsed = hljs.highlightAuto(code).value;
-      }
-      return parsed;
-    }
-  });
 
   return function (pages, next, options) {
     _(pages).each(function(page) {

@@ -50,6 +50,7 @@
     "marked": "~0.2.8",
     "highlight.js": "~7.3.0",
     "underscore": "~1.4.4",
-    "async": "~0.2.5"
+    "async": "~0.2.5",
+    "jsdom": "~0.5.4"
   }
 }
