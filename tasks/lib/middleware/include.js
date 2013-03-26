@@ -26,6 +26,11 @@ module.exports = function () {
             var href = includeNode.getAttribute('href');
             var fileToInclude = path.join(options.contentPath, page.path, href);
             var fileContents = grunt.file.read(fileToInclude);
+            var range = includeNode.getAttribute('data-lines');
+            if (range) {
+              range = range.split('-');
+              fileContents = fileContents.split('\n').splice(range[0] - 1, range[1] - range[0]).join('\n');
+            }
             var includedLanguage = includeNode.getAttribute('data-lang');
             if (includedLanguage) {
               fileContents = '<pre><code class="lang-' + includedLanguage + '">' + fileContents + '</code></pre>';

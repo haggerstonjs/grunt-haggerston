@@ -1,4 +1,7 @@
-function addNumber(a, b) {
+$(function()
+{
+  function addNumber(a, b) {
     var result = a + b;
     return result;
-}
+  }
+});
