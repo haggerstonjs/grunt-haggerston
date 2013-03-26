@@ -5,9 +5,4 @@ To my blog!
 
 Code example:
 
-```javascript
-function addNumber(a, b) {
-	var result = a + b;
-	return result;
-}
-```
+<link rel="include" href="addNumber.js" data-lang="javascript" />

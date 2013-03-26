@@ -11,5 +11,6 @@ module.exports = [
   require('./markdown')(),
   require('./generate')(),
   require('./render')(),
+  require('./include')(),
   require('./highlight')()
 ];
