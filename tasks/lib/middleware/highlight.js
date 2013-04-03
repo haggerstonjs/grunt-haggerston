@@ -7,36 +7,38 @@
  */
 
 var _ = require('underscore');
-var async = require('async');
-var jsdom = require('jsdom');
 var hljs = require('highlight.js');
+var cheerio = require('cheerio');
 
 module.exports = function () {
   'use strict';
 
   return function (pages, next, options) {
-    async.each(pages, function (page, cb) {
-      jsdom.env(page.renderedTemplate, function (errors, window) {
-        var codeBlocks = window.document.querySelectorAll('code');
-        if (codeBlocks.length) {
-          _(codeBlocks).each(function (codeNode) {
-            var cssClass = codeNode.getAttribute('class');
-            var cssLanguage = cssClass.match(/lang-(.*)/);
-            var highlightedCode;
-            if (cssLanguage && cssLanguage.length) {
-              highlightedCode = hljs.highlight(cssLanguage[1], codeNode.innerHTML).value;
-            } else {
-              highlightedCode = hljs.highlightAuto(codeNode.innerHTML).value;
-            }
-            codeNode.innerHTML = highlightedCode;
-          });
-          page.renderedTemplate = window.document.doctype.toString() + window.document.outerHTML;
+    _(pages).each(function(page) {
+      // Load the rendered page string into cheerio so we can modify it
+      var $ = cheerio.load(page.renderedTemplate);
+
+      // Find each code block and run it through the highlighter
+      $('code').each(function(i, element) {
+        // Grab a ref to the code block so we can replace it's contents later
+        var $code = $(element);
+        var codeString = $code.html();
+        var lang = $(element).attr('class');
+        var highlightedCode;
+        if (lang) {
+          lang = lang.match(/lang-(.*)/)[1];
+          highlightedCode = hljs.highlight(lang, codeString).value;
+        } else {
+          highlightedCode = hljs.highlightAuto(codeString).value;
         }
-        window.close();
-        cb(null);
+        // Replace the code block html with the highlighted string
+        $code.html(highlightedCode);
       });
-    }, function() {
-      next(pages);
+
+      // Render the page string from cheerio back into the page object
+      page.renderedTemplate = $.html();
     });
+
+    next(pages);
   };
 };

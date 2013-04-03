@@ -9,40 +9,48 @@
 var _ = require('underscore');
 var path = require('path');
 var grunt = require('grunt');
-var async = require('async');
-var jsdom = require('jsdom');
-var hljs = require('highlight.js');
+var cheerio = require('cheerio');
 
 module.exports = function () {
   'use strict';
 
   return function (pages, next, options) {
-    async.each(pages, function (page, cb) {
-      jsdom.env(page.renderedTemplate, function (errors, window) {
-        var includeBlocks = window.document.querySelectorAll('link[rel=include]');
-        if (includeBlocks.length) {
-          _(includeBlocks).each(function (includeNode) {
-            var originalCode = includeNode.outerHTML;
-            var href = includeNode.getAttribute('href');
-            var fileToInclude = path.join(options.contentPath, page.path, href);
-            var fileContents = grunt.file.read(fileToInclude);
-            var range = includeNode.getAttribute('data-lines');
-            if (range) {
-              range = range.split('-');
-              fileContents = fileContents.split('\n').splice(range[0] - 1, range[1] - range[0]).join('\n');
-            }
-            var includedLanguage = includeNode.getAttribute('data-lang');
-            if (includedLanguage) {
-              fileContents = '<pre><code class="lang-' + includedLanguage + '">' + fileContents + '</code></pre>';
-            }
-            page.renderedTemplate = page.renderedTemplate.replace(originalCode, fileContents);
-          });
+    _(pages).each(function(page) {
+      // Load the rendered page string into cheerio so we can modify it
+      var $ = cheerio.load(page.renderedTemplate);
+
+      // Find each code block and run it through the highlighter
+      $('link[rel=include]').each(function(i, element) {
+        // Grab ref to the original link element so we can replace it later
+        var $codeLink = $(element);
+
+        // Find and load the code file
+        var href = $codeLink.attr('href');
+        var includePath = path.join(options.contentPath, page.path, href);
+        var fileContents = grunt.file.read(includePath);
+
+        // If a line range is supplied then truncate the contents to match
+        var range = $codeLink.attr('data-lines');
+        if (range) {
+          range = range.split('-');
+          fileContents = fileContents.split('\n').splice(range[0] - 1, range[1] - range[0]).join('\n');
         }
-        window.close();
-        cb(null);
+        
+        var lang = $codeLink.attr('data-lang');
+
+        // Create new code block and insert the file contents
+        var $codeBlock = $('<pre><code></code></pre>');
+        $codeBlock.find('code').addClass('lang-' + lang);
+        $codeBlock.find('code').html(fileContents);
+
+        // Replace the original link element with the new code block
+        $codeLink.replaceWith($codeBlock);
       });
-    }, function() {
-      next(pages);
+
+      // Render the page string from cheerio back into the page object
+      page.renderedTemplate = $.html();
     });
+
+    next(pages);
   };
 };
