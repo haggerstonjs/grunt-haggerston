@@ -20,7 +20,7 @@ exports.linkTo = function(fromPage, toPage) {
 };
 
 exports.basePath = function(page) {
-  return path.relative(page.path , '') + path.sep;
+  return path.relative(page.path , '/') + path.sep;
 };
 
 exports.where = function(pages, propertyName, value) {
