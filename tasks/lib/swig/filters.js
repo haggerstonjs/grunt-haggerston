@@ -19,6 +19,11 @@ exports.linkTo = function(fromPage, toPage) {
   return relativeLink;
 };
 
+exports.relativePath = function(fromPage, toPage) {
+  var relativeLink = path.relative(fromPage.path , toPage.url);
+  return path.dirname(relativeLink) + path.sep;
+};
+
 exports.basePath = function(page) {
   return path.relative(page.path , '/') + path.sep;
 };
