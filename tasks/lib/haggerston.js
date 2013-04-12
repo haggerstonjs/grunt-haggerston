@@ -25,6 +25,7 @@ var Haggerston = function(options) {
   _(jsonFiles).each(function(jsonFile) {
     var jsonData = grunt.file.readJSON(jsonFile);
     var pageUrl = '/' + path.relative(options.contentPath, jsonFile).replace('.json', jsonData.extension || '.html');
+    grunt.verbose.writeln('Initialising Page for ' + pageUrl)
     var page = new Page(pageUrl, jsonData);
     this.pages.push(page);
   }, this);
@@ -45,8 +46,9 @@ Haggerston.prototype.start = function(destPath, done) {
       function(cb) {
         cb(null, pages);
       }
-    ].concat(_(this.middlewares).map(function(middleware) {
+    ].concat(_(this.middlewares).map(function(middleware, index) {
       return function(pages, cb) {
+        grunt.verbose.writeln('Running middleware[' + index + '] on ' + pages.length + ' pages');
         middleware(
           pages,
           function(pages) {
