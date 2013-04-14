@@ -7,7 +7,7 @@
  */
 
 module.exports = [
-  require('./json')(),
+//  require('./json')(),
   require('./markdown')(),
   require('./generate')(),
   require('./render')(),
