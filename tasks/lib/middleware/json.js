@@ -15,8 +15,8 @@ module.exports = function() {
 
   return function (pages, next, options) {
     _(pages).each(function(page) {
-      // Recursively loop over every property of the page
-      _(page).deepEach(function(value, key, obj) {
+      // Recursively loop over every property of the page's templateData
+      _(page.templateData).deepEach(function(value, key, obj) {
         // Search for string values ending in '.json'
         if (_.isString(value) && value.match(/\.json$/)) {
           // Absolute urls are based off the contentPath, not the OS file system
