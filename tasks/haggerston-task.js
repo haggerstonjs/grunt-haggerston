@@ -16,7 +16,7 @@ var deepEach = require('./lib/deepeach');
 var Haggerston = require('../tasks/lib/haggerston');
 
 module.exports = function(grunt) {
-  grunt.registerTask('haggerston', 'Your task description goes here.', function() {
+  grunt.registerMultiTask('haggerston', 'Your task description goes here.', function() {
     // The render function is async and will call done() when finished
     var done = this.async();
 
