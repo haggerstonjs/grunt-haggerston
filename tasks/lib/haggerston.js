@@ -25,7 +25,7 @@ var Haggerston = function(options) {
   _(jsonFiles).each(function(jsonFile) {
     var jsonData = grunt.file.readJSON(jsonFile);
     var pageUrl = '/' + path.relative(options.contentPath, jsonFile).replace('.json', jsonData.extension || '.html');
-    grunt.verbose.writeln('Initialising Page for ' + pageUrl)
+    grunt.verbose.writeln('Initialising Page for ' + pageUrl.cyan)
     var page = new Page(pageUrl, jsonData);
     this.pages.push(page);
   }, this);
