@@ -17,10 +17,12 @@ module.exports = function() {
       // Create an intermediate data provider that will combine templateData and the page object
       var data = _.extend({
           page: page,
-          pages: pages
+          pages: pages,
+          options: options
         },
         page.templateData
       );
+
       page.renderedTemplate = swig.compileFile(page.template).render(data);
     });
 
