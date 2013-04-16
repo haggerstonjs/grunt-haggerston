@@ -23,14 +23,28 @@ module.exports = function () {
         // Grab a ref to the code block so we can replace it's contents later
         var $code = $(element);
         var codeString = $code.html();
+
+        // The markdown parser escaped html chars in the original code block.
+        // This obviously allows it to be parsed correctly by the browser, and
+        // also cheerio, but highlght.js needs to parse a plain string so we
+        // must unescape it again.
+        codeString = codeString
+          .replace(/&amp;/g, '&')
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"')
+          .replace(/&#39;/g, "'");
+
         var lang = $(element).attr('class');
         var highlightedCode;
+
         if (lang) {
           lang = lang.match(/lang-(.*)/)[1];
           highlightedCode = hljs.highlight(lang, codeString).value;
         } else {
           highlightedCode = hljs.highlightAuto(codeString).value;
         }
+
         // Replace the code block html with the highlighted string
         $code.html(highlightedCode);
       });
