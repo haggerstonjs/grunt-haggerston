@@ -2,12 +2,16 @@
   "name": "grunt-haggerston",
   "description": "A static site generator",
   "version": "0.0.1",
-  "homepage": "https://github.com/vitch/grunt-haggerston",
+  "homepage": "https://github.com/haggerstonjs/grunt-haggerston",
   "author": {
-    "name": "Kelvin Luck",
-    "url": "https://github.com/vitch"
+    "name": "HaggerstonJS team",
+    "url": "https://github.com/haggerstonjs"
   },
   "contributors": [
+    {
+      "name": "Kelvin Luck",
+      "url": "https://github.com/vitch"
+    },
     {
       "name": "Matt Sweetman",
       "url": "http://www.github.com/webroo"
@@ -15,15 +19,15 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/vitch/grunt-haggerston.git"
+    "url": "git://github.com/haggerstonjs/grunt-haggerston.git"
   },
   "bugs": {
-    "url": "https://github.com/vitch/grunt-haggerston/issues"
+    "url": "https://github.com/haggerstonjs/grunt-haggerston/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/vitch/grunt-haggerston/blob/master/LICENSE-MIT"
+      "url": "https://github.com/haggerstonjs/grunt-haggerston/blob/master/LICENSE-MIT"
     }
   ],
   "main": "Gruntfile.js",
