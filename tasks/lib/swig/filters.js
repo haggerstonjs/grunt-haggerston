@@ -1,8 +1,8 @@
 /*
  * grunt-haggerston
- * https://github.com/vitch/grunt-haggerston
+ * https://github.com/haggerstonjs/grunt-haggerston
  *
- * Copyright (c) 2013 Kelvin Luck
+ * Copyright (c) 2013 Kelvin Luck, Matt Sweetman
  * Licensed under the MIT license.
  */
 
