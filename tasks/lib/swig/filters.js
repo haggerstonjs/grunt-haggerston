@@ -50,8 +50,12 @@ exports.matches = function(pages, propertyName, value) {
   });
 };
 
-exports.sort = function(pages, key) {
-  return _(pages).sortBy(key);
+exports.sort = function(pages, key, descending) {
+  var sorted = _(pages).sortBy(key);
+  if (descending) {
+    sorted.reverse();
+  }
+  return sorted;
 };
 
 exports.lastModified = function(page) {
