@@ -35,7 +35,7 @@ module.exports = function() {
     _(pages).each(function(page, i) {
       if (page.generate) {
         _(getCategorisedPages(pages, page.generate.category)).each(function(subpages, category) {
-          var categoryPageUrl = path.join(page.path, category + (page.extension || '.html'));
+          var categoryPageUrl = path.join(page.path, category.replace(' ', '-') + (page.extension || '.html'));
           var categoryPage = new Page(categoryPageUrl, _({}).extend(page, {
               templateData: _.extend({}, page.templateData, {
                 category: category,
