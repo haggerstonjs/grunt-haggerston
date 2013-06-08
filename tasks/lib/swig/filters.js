@@ -50,8 +50,20 @@ exports.matches = function(pages, propertyName, value) {
   });
 };
 
+// Sorts passed items by key.
+// key can be a path to the key in dot notation (e.g. 'templateData.date')
 exports.sort = function(pages, key) {
-  return _(pages).sortBy(key);
+  if (key.indexOf('.') === -1) {
+    return _(pages).sortBy(key);
+  }
+  var keyParts = key.split('.');
+  return _(pages).sortBy(function(page) {
+    var val = page;
+    _(keyParts).each(function(part) {
+      val = val[part];
+    });
+    return val;
+  });
 };
 
 exports.lastModified = function(page) {
