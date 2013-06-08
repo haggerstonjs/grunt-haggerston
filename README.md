@@ -1,6 +1,7 @@
 # grunt-haggerston
 
-> A static site generator
+Haggerston is an HTML page generator designed to be used alongside other Grunt tasks to help you build static sites.
+
 
 ## Getting Started
 
@@ -60,6 +61,24 @@ Default value: `options.src + 'templates'`
 
 The directory that contains the Swig template files. Generally omitted in favour of the default.
 
+#### options.swigFilters
+Type: `Object`
+Default value: `null`
+
+An object map of Swig filter functions that will be available when rendering page templates. See [Swig Custom Filters](http://paularmstrong.github.io/swig/docs/#filters-custom) for more information.
+
+#### options.swigTags
+Type: `Object`
+Default value: `null`
+
+An object map of Swig tag functions that will be available when rendering page templates. See [Swig Custom Tags](http://paularmstrong.github.io/swig/docs/#tags-custom) for more information.
+
+#### options.swigExtensions
+Type: `Object`
+Default value: `null`
+
+An object map of Swig library extensions that will be available when rendering page templates. See [Swig Custom Tags](http://paularmstrong.github.io/swig/docs/#tags-custom) for more information.
+
 ### Usage Examples
 
 #### Default Options
@@ -80,11 +99,11 @@ Alternatively you can specify custom paths:
 grunt.initConfig({
   haggerston: {
     options: {
-      contentPath: 'sourceFiles',
-      templatePath: 'htmlTemplates'
-      dest: 'exported',
+      contentPath: 'source',
+      templatePath: 'source/templates',
+      dest: 'deploy'
     }
-  },
+  }
 })
 ```
 
