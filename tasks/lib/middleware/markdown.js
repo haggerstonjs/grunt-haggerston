@@ -10,6 +10,7 @@ var _ = require('underscore');
 var path = require('path');
 var grunt = require('grunt');
 var marked = require('marked');
+var swig = require('swig');
 
 module.exports = function() {
   'use strict';
@@ -27,7 +28,11 @@ module.exports = function() {
           } else {
             filePath = path.join(options.contentPath, page.path, value);
           }
-          obj[key] = marked(grunt.file.read(filePath));
+          var fileContents = grunt.file.read(filePath);
+          if (page.markdownPreprocessWithSwig) {
+            fileContents = swig.compile(fileContents, { filename: filePath})({});
+          }
+          obj[key] = marked(fileContents);
         }
       });
     });
