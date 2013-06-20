@@ -62,6 +62,9 @@ exports.sort = function(pages, key) {
     _(keyParts).each(function(part) {
       val = val[part];
     });
+    if (_.isDate(val)) {
+      val = val.getTime();
+    }
     return val;
   });
 };
