@@ -48,10 +48,12 @@ Haggerston.prototype.start = function(destPath, done) {
       }
     ].concat(_(this.middlewares).map(function(middleware, index) {
       return function(pages, cb) {
-        grunt.verbose.writeln('Running middleware[' + index + '] on ' + pages.length + ' pages');
+        var start = Date.now();
+        grunt.log.write('Running middleware ' + (middleware.name ? middleware.name.cyan : index) + ' on ' + pages.length + ' pages...');
         middleware(
           pages,
           function(pages) {
+            grunt.log.writeln('complete in ' + ((Date.now() - start) / 1000).toFixed(2).cyan + ' seconds');
             cb(null, pages);
           },
           options
@@ -60,11 +62,13 @@ Haggerston.prototype.start = function(destPath, done) {
     })),
     function(error, pages) {
       // Write pages to files
+      var start = Date.now();
+      grunt.log.write('Writing ' + pages.length + ' pages...');
       _(pages).each(function(page) {
         var outFilePath = path.join(destPath, page.url);
-        grunt.verbose.writeln('Generating ' + outFilePath.cyan);
         grunt.file.write(outFilePath, page.renderedTemplate);
       });
+      grunt.log.writeln('complete in ' + ((Date.now() - start) / 1000).toFixed(2).cyan + ' seconds');
 
       // The grunt async task callback passed from the haggerston-task
       done();

@@ -13,7 +13,7 @@ var grunt = require('grunt');
 module.exports = function() {
   'use strict';
 
-  return function (pages, next, options) {
+  return function json(pages, next, options) {
     _(pages).each(function(page) {
       // Recursively loop over every property of the page's templateData
       _(page.templateData).deepEach(function(value, key, obj) {

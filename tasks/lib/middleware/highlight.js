@@ -13,7 +13,7 @@ var cheerio = require('cheerio');
 module.exports = function () {
   'use strict';
 
-  return function (pages, next, options) {
+  return function highlight(pages, next, options) {
     _(pages).each(function(page) {
       // Load the rendered page string into cheerio so we can modify it
       var $ = cheerio.load(page.renderedTemplate);

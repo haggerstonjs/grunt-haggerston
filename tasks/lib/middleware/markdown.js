@@ -15,7 +15,7 @@ var swig = require('swig');
 module.exports = function() {
   'use strict';
 
-  return function (pages, next, options) {
+  return function markdown(pages, next, options) {
     _(pages).each(function(page) {
       // Recursively loop over every property of the page
       _(page).deepEach(function(value, key, obj) {

@@ -29,7 +29,7 @@ module.exports = function() {
     return pagesByCategory;
   }
   
-  return function (pages, next, options) {
+  return function generate(pages, next, options) {
 
     var generatedPages = [];
     _(pages).each(function(page, i) {

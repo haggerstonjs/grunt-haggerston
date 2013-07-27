@@ -12,7 +12,7 @@ var swig = require('swig');
 module.exports = function() {
   'use strict';
 
-  return function (pages, next, options) {
+  return function render(pages, next, options) {
     _(pages).each(function(page) {
       // Create an intermediate data provider that will combine templateData and the page object
       var data = _.extend({
