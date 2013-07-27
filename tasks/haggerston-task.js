@@ -17,6 +17,7 @@ var Haggerston = require('../tasks/lib/haggerston');
 
 module.exports = function(grunt) {
   grunt.registerTask('haggerston', 'Builds a static website in the _dest_ directory based on the files in _src_.', function() {
+    var start = Date.now();
     // The render function is async and will call done() when finished
     var done = this.async();
 
@@ -63,6 +64,9 @@ module.exports = function(grunt) {
 
     // Load the pages, run the middleware, then write them to files.
     // This will call the async done method when finished.
-    haggerston.start(options.dest, done);
+    haggerston.start(options.dest, function() {
+      grunt.log.writeln('Completed in ' + ((Date.now() - start) / 1000).toFixed(2).cyan + ' seconds');
+      done();
+    });
   });
 };
