@@ -16,12 +16,11 @@ module.exports = function() {
   'use strict';
 
   return function markdown(pages, next, options) {
-    var mdRegExp = /\.md$/;
     _(pages).each(function(page) {
       // Recursively loop over every property of the page
       _(page).deepEach(function(value, key, obj) {
-        // Search for string values ending in '.json'
-        if (_.isString(value) && value.match(mdRegExp)) {
+        // Search for string values ending in '.md'
+        if (_.isString(value) && value.substr(-3) === '.md') {
           // Absolute urls are based off the contentPath, not the OS file system
           var filePath;
           if (grunt.file.isPathAbsolute(value)) {
