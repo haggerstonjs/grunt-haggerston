@@ -22,8 +22,7 @@ module.exports = function() {
         },
         page.templateData
       );
-
-      page.renderedTemplate = swig.compileFile(page.template).render(data);
+      page.renderedTemplate = swig.compileFile(page.template)(data);
     });
 
     next(pages);

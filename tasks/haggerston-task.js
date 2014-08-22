@@ -45,15 +45,14 @@ module.exports = function(grunt) {
     }
 
     // Initialise swig with the relevant options
-    swig.init({
-      root: options.templatesPath,
-      filters: _.extend(
-        {},
-        require('./lib/swig/filters'),
-        options.swigFilters
-      ),
-      tags: options.swigTags,
-      extensions: options.swigExtensions
+    swig.setDefaults({ loader: swig.loaders.fs(options.templatesPath )});
+    var filters = _.extend(
+      {},
+      require('./lib/swig/filters'),
+      options.swigFilters
+    );
+    _.each(filters, function(func, name) {
+      swig.setFilter(name, func);
     });
 
     var haggerston = new Haggerston(options);
