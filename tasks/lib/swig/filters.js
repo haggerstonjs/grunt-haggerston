@@ -52,7 +52,7 @@ exports.matches = function(pages, propertyName, value) {
 
 // Sorts passed items by key.
 // key can be a path to the key in dot notation (e.g. 'templateData.date')
-exports.sort = function(pages, key) {
+exports.sortByKey = function(pages, key) {
   if (key.indexOf('.') === -1) {
     return _(pages).sortBy(key);
   }
