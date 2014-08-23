@@ -33,7 +33,7 @@ module.exports = function () {
           .replace(/&lt;/g, '<')
           .replace(/&gt;/g, '>')
           .replace(/&quot;/g, '"')
-          .replace(/&#39;/g, "'");
+          .replace(/&apos;/g, "'");
 
         var lang = $(element).attr('class');
         var highlightedCode;
