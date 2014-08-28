@@ -107,6 +107,26 @@ grunt.initConfig({
 })
 ```
 
+### Generating draft pages
+
+Pages can be tagged as drafts and generated only when a specific option is passed to the grunt command.
+
+To do this you simply add an `isDraft` flag to the page `json` file, like so:
+
+```js
+{
+  "template": "article.html",
+  "isDraft": true,
+  "templateData": {}
+}
+```
+
+The run the grunt task with the following option:
+
+    grunt --generateDrafts=true
+
+If this command line option is false, or ommitted, the draft pages are not generated or linked to at all.
+
 ## Contributing
 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).

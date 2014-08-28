@@ -27,7 +27,10 @@ var Haggerston = function(options) {
     var pageUrl = '/' + path.relative(options.contentPath, jsonFile).replace('.json', jsonData.extension || '.html');
     grunt.verbose.writeln('Initialising Page for ' + pageUrl.cyan)
     var page = new Page(pageUrl, jsonData);
-    this.pages.push(page);
+    // Always add the page if we're in drafts mode, otherwise only add it if it's not a draft
+    if (options.generateDrafts || !page.isDraft) {
+      this.pages.push(page);
+    }
   }, this);
 };
 

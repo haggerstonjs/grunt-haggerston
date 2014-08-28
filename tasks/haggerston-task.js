@@ -25,7 +25,8 @@ module.exports = function(grunt) {
     var options = this.options({
         src: 'src',
         dest: 'out',
-        middleware: require('./lib/middleware/default')
+        middleware: require('./lib/middleware/default'),
+        generateDrafts: grunt.option('generateDrafts')
       });
 
     // Create defaults for the content & template paths if not been specified in the options
