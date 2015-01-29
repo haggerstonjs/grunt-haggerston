@@ -2,6 +2,7 @@
 
 Haggerston is an HTML page generator designed to be used alongside other Grunt tasks to help you build static sites.
 
+While the Haggerston website is under construction the best introduction to the ideas behind Haggerston and how to use it is available in [this blog post](http://webroo.org/articles/2013-10-27/new-website-built-with-haggerston/).
 
 ## Getting Started
 
